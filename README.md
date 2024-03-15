@@ -1,5 +1,5 @@
 
-# Orange It Up
+# Borrowed from: Orange It Up
 This project is developed by [enisfr](https://github.com/enisfr)
 
 This is a TypeScript Chrome Extension that allows user to manipulate the background of the web page.
