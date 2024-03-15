@@ -1,0 +1,26 @@
+{
+	"name": "Dueling Network Testing",
+	"description": "Plz work",
+	"version": "1.0",
+	"manifest_version": 3,
+	"action": {},
+	"permissions": [
+		"activeTab",
+		"scripting"
+	],
+	"content_scripts": [
+		{		
+			"matches": [
+				"https://www.duelingbook.com/"
+			],
+			"js": [
+				"background.js"
+			]
+		}
+
+	],
+	"web_accessible_resources": [{
+		"matches": ["<all_urls>"],
+		"resources": ["image.png"]
+	}]
+}
