@@ -93,7 +93,7 @@ export function createTable(cardName: string, jsonObj: any): any {
 }
 
 // Function to fetch data from API with caching
-async function fetchDataWithCache(url: string, params: any) {
+export async function fetchDataWithCache(url: string, params: any) {
     const cacheKey = generateCacheKey(url, params);
     const cachedData = localStorage.getItem(cacheKey);
 
@@ -134,6 +134,10 @@ function isCacheValid(timestamp: number) {
 const apiUrl = 'https://api.example.com/data';
 const queryParams = { param1: 'value1', param2: 'value2' };
 
-// fetchDataWithCache(apiUrl, queryParams)
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error));
+const urls = ["https://db.ygoprodeck.com/api/v7/cardinfo.php?name=Kuriboh", 
+            "https://db.ygoprodeck.com/api/v7/cardinfo.php?name=Visas Starfrost",
+            "https://db.ygoprodeck.com/api/v7/cardinfo.php?name=Fissure"]
+
+fetchDataWithCache(apiUrl, queryParams)
+    .then(data => console.log(data))
+    .catch(error => console.error(error));

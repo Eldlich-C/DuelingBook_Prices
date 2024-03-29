@@ -1,7 +1,8 @@
 import { test_getCardPrices, 
     waitForElementToBeNotNull,
-    createTable } from './api_call'
-
+    createTable,
+    fetchDataWithCache } from './api_call'
+      
 const myCardName = "Blue-Eyes White Dragon";
 console.log(myCardName);
 console.log("Some Changes")
@@ -25,23 +26,22 @@ img.src = chrome.runtime.getURL('image.png');
 
 // Create a table element
 
-const table = document.createElement('table');
+// const table = document.createElement('table');
 
-promiseB.then((resolvedResult: any) => {
-    const table = createTable("test", resolvedResult);
+console.log("MutationObserver")
+let prev_element = "";
+let observer = new MutationObserver(mutations => {
+    const cardNameElement = document.querySelector('span.name_txt.selectable[style*="display: "]');
+    const cardTextElement = document.querySelector('span.effect_txt') as HTMLElement;
 
-    console.log("MutationObserver")
-    let prev_element = "";
-    let observer = new MutationObserver(mutations => {
-        const cardNameElement = document.querySelector('span.name_txt.selectable[style*="display: "]');
-        const cardTextElement = document.querySelector('span.effect_txt') as HTMLElement;
+    if (cardNameElement && cardTextElement) { 
+        const textValue = cardNameElement.textContent?.trim() || "";
+        // if (prev_element !== textValue) {
+        promiseB.then((resolvedResult: any) => {
 
-        if (cardNameElement && cardTextElement) { 
-            const textValue = cardNameElement.textContent?.trim() || "";
-            // if (prev_element !== textValue) {
-
+            const table = createTable("test", resolvedResult);
             cardTextElement.textContent = ""
-            cardTextElement.style.fontSize = '30px'; // Change font size
+            cardTextElement.style.fontSize = '33px'; // Change font size
             // cardTextElement.style.fontFamily = 'Arial, sans-serif'; // Change font family
 
             // Apply CSS styles to position the image on top of the span element
@@ -51,29 +51,31 @@ promiseB.then((resolvedResult: any) => {
             table.style.left = '50px'; // Adjust left position as needed
             table.style.width = '100%'; // Set width to cover the entire width of the target element
             table.style.zIndex = '9999'; // Ensures the image is on top of other elements
-
+            
             cardTextElement.append(table)
 
-            console.log(cardNameElement);
-            console.log(cardTextElement);
-            // prev_element = textValue;
-            // }
-        }
+        })
+
+        console.log(cardNameElement);
+        console.log(cardTextElement);
+        // prev_element = textValue;
+        // }
+    }
+});
+
+const selector = 'span.name_txt.selectable[style*="display: "]';
+const interval = 1000; // milliseconds
+const maxAttempts = 1000;
+
+
+waitForElementToBeNotNull(selector, interval, maxAttempts)
+    .then((cardNameElement) => {
+        // Now you have cardNameElement, you can observe it
+        observer.observe(cardNameElement, { childList: true, subtree: true });
+    })
+    .catch((error) => {
+        console.error(error);
     });
 
-    const selector = 'span.name_txt.selectable[style*="display: "]';
-    const interval = 1000; // milliseconds
-    const maxAttempts = 1000;
 
 
-    waitForElementToBeNotNull(selector, interval, maxAttempts)
-        .then((cardNameElement) => {
-            // Now you have cardNameElement, you can observe it
-            observer.observe(cardNameElement, { childList: true, subtree: true });
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-
-
-});
