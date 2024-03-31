@@ -120,7 +120,8 @@ export async function fetchDataWithCache(url: string, params: any) {
 
 // Function to generate cache key
 function generateCacheKey(url: string, params: any) {
-    return `${url}-${JSON.stringify(params)}`;
+    var cardName = url.replace("https://db.ygoprodeck.com/api/v7/cardinfo.php?name=", '')
+    return cardName;
 }
 
 // Function to check if cache is still valid
@@ -131,13 +132,14 @@ function isCacheValid(timestamp: number) {
 }
 
 // Example usage
-const apiUrl = 'https://api.example.com/data';
 const queryParams = { param1: 'value1', param2: 'value2' };
 
 const urls = ["https://db.ygoprodeck.com/api/v7/cardinfo.php?name=Kuriboh", 
             "https://db.ygoprodeck.com/api/v7/cardinfo.php?name=Visas Starfrost",
             "https://db.ygoprodeck.com/api/v7/cardinfo.php?name=Fissure"]
 
-fetchDataWithCache(apiUrl, queryParams)
+for (let i = 0; i < urls.length; i++){
+    fetchDataWithCache(urls[i], queryParams)
     .then(data => console.log(data))
     .catch(error => console.error(error));
+};
